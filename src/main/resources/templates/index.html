@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人通讯录系统</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #666;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        label {
+            display: inline-block;
+            width: 60px;
+            text-align: right;
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            padding: 4px;
+            width: 150px;
+            font-size: 14px;
+        }
+
+        input[type="submit"],
+        button {
+            padding: 4px 8px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>个人通讯录系统</h1>
+
+<h2>添加新的联系人:</h2>
+<form action="/add" method="post">
+    <label for="name">姓名:</label>
+    <input type="text" id="name" name="name" required><br><br>
+    <label for="phone">电话:</label>
+    <input type="text" id="phone" name="phone" required><br><br>
+    <label for="address">地址:</label>
+    <input type="text" id="address" name="address" required><br><br>
+    <input type="submit" value="添加联系人">
+</form>
+
+<h2>联系人列表:</h2>
+<table>
+    <tr>
+        <th>姓名</th>
+        <th>电话</th>
+        <th>地址</th>
+        <th>操作</th>
+    </tr>
+    <tr th:each="contact : ${contacts}">
+        <td th:text="${contact.name}"></td>
+        <td th:text="${contact.phone}"></td>
+        <td th:text="${contact.address}"></td>
+        <td>
+            <form th:action="@{/delete}" th:method="post">
+                <input type="hidden" name="name" th:value="${contact.name}" />
+                <button type="submit">删除</button>
+            </form>
+            <form th:action="@{/update}" th:method="post">
+                <input type="hidden" name="oldName" th:value="${contact.name}" />
+                <label for="newName">姓名:</label>
+                <input type="text" id="newName" name="newName" required><br><br>
+                <label for="newPhone">电话:</label>
+                <input type="text" id="newPhone" name="newPhone" required><br><br>
+                <label for="newAddress">地址:</label>
+                <input type="text" id="newAddress" name="newAddress" required><br><br>
+                <button type="submit">更新</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
